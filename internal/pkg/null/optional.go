@@ -43,3 +43,15 @@ func NilString(s string) *string {
 
 	return &s
 }
+
+func NilFloat32(f float32) *float32 {
+	return &f
+}
+
+func NilInt(i int) *int {
+	return &i
+}
+
+func NilBool(b bool) *bool {
+	return &b
+}

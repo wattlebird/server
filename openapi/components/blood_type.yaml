@@ -1,0 +1,21 @@
+title: BloodType
+enum:
+  - 1
+  - 2
+  - 3
+  - 4
+type: integer
+description: Blood type of a person. A, B, AB, O
+x-ms-enum:
+  name: BloodType
+  modelAsString: false
+  values:
+    - A
+    - B
+    - AB
+    - O
+x-enum-varnames:
+  - A
+  - B
+  - AB
+  - O

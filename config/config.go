@@ -60,6 +60,11 @@ type AppConfig struct {
 			Timeout time.Duration `yaml:"timeout" env:"MEILISEARCH_REQUEST_TIMEOUT" env-default:"2s"`
 		} `yaml:"meilisearch"`
 
+		ElasticSearch struct {
+			URL string `yaml:"url" env:"ELASTICSEARCH_URL"`
+			Key string `yaml:"key" env:"ELASTICSEARCH_KEY"`
+		} `yaml:"elasticsearch"`
+
 		SearchBatchSize     int           `env:"SEARCH_BATCH_SIZE" yaml:"batch_size" env-default:"100"`
 		SearchBatchInterval time.Duration `env:"SEARCH_BATCH_INTERVAL" yaml:"batch_interval" env-default:"10m"`
 	} `yaml:"search"`

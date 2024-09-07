@@ -1,0 +1,20 @@
+title: PersonImages
+required:
+  - large
+  - medium
+  - small
+  - grid
+type: object
+properties:
+  large:
+    title: Large
+    type: string
+  medium:
+    title: Medium
+    type: string
+  small:
+    title: Small
+    type: string
+  grid:
+    title: Grid
+    type: string

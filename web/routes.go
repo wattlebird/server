@@ -23,6 +23,7 @@ import (
 	"github.com/bangumi/server/web/handler"
 	"github.com/bangumi/server/web/handler/character"
 	"github.com/bangumi/server/web/handler/common"
+	"github.com/bangumi/server/web/handler/essearch"
 	"github.com/bangumi/server/web/handler/index"
 	"github.com/bangumi/server/web/handler/notification"
 	"github.com/bangumi/server/web/handler/person"
@@ -51,6 +52,7 @@ func AddRouters(
 	notificationHandler notification.Notification,
 	subjectHandler subject.Subject,
 	indexHandler index.Handler,
+	essearchHandler essearch.Handler,
 ) {
 	app.GET("/", indexPage())
 
@@ -126,6 +128,13 @@ func AddRouters(
 
 	v0.GET("/revisions/episodes/:id", h.GetEpisodeRevision)
 	v0.GET("/revisions/episodes", h.ListEpisodeRevision)
+
+	// essearch related
+	v0.GET("/essearch/autocomplete", essearchHandler.AutoComplete)
+	v0.POST("/essearch/subject", essearchHandler.Subject)
+	v0.POST("/essearch/celebrity", essearchHandler.Celebrity)
+	v0.POST("/essearch/scroll", essearchHandler.Scroll)
+
 	v0.Any("/*", globalNotFoundHandler)
 
 	var originMiddleware = origin.New(fmt.Sprintf("https://%s", c.WebDomain))

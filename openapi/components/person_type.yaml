@@ -1,0 +1,18 @@
+title: PersonType
+enum:
+  - 1
+  - 2
+  - 3
+type: integer
+description: "`1`, `2`, `3` 表示 `个人`, `公司`, `组合`"
+x-ms-enum:
+  name: PersonType
+  modelAsString: false
+  values:
+    - Individual
+    - Corporation
+    - Association
+x-enum-varnames:
+  - Individual
+  - Corporation
+  - Association

@@ -1,0 +1,12 @@
+title: Stat
+required:
+  - comments
+  - collects
+type: object
+properties:
+  comments:
+    title: Comments
+    type: integer
+  collects:
+    title: Collects
+    type: integer

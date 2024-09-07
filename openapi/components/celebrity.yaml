@@ -1,0 +1,60 @@
+title: Celebrity
+required:
+  - category
+  - id
+  - name
+  - type
+  - career
+  - summary
+  - locked
+  - last_modified
+  - stat
+type: object
+properties:
+  category:
+    type: integer
+    description: 0 for person, 1 for character
+  id:
+    title: ID
+    type: integer
+  name:
+    title: Name
+    type: string
+  type:
+    $ref: "./person_type.yaml"
+  images:
+    $ref: "./person_images.yaml"
+  summary:
+    title: Summary
+    type: string
+  locked:
+    title: Locked
+    type: boolean
+  infobox:
+    title: Infobox
+    type: array
+    items:
+      type: object
+    description: |-
+      server parsed infobox, a map from key to string or tuple
+      null if server infobox is not valid
+  gender:
+    title: Gender
+    type: string
+    description: parsed from wiki, maybe null
+  blood_type:
+    $ref: "./blood_type.yaml"
+  birth_year:
+    title: Birth Year
+    type: integer
+    description: parsed from wiki, maybe `null`
+  birth_mon:
+    title: Birth Mon
+    type: integer
+    description: parsed from wiki, maybe `null`
+  birth_day:
+    title: Birth Day
+    type: integer
+    description: parsed from wiki, maybe `null`
+  stat:
+    $ref: "./stat.yaml"

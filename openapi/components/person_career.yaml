@@ -1,0 +1,11 @@
+title: PersonCareer
+enum:
+  - producer
+  - mangaka
+  - artist
+  - seiyu
+  - writer
+  - illustrator
+  - actor
+type: string
+description: An enumeration.

@@ -12,6 +12,7 @@ tags:
   - name: "收藏"
   - name: "编辑历史"
   - name: "目录"
+  - name: "搜索"
 
 paths:
   "/v0/search/subjects":
@@ -1878,6 +1879,109 @@ paths:
           "$ref": "#/components/responses/500"
       security:
         - HTTPBearer: []
+  "/v0/essearch/subject":
+    post:
+      tags:
+        - 搜索
+      summary: Search subject
+      operationId: essearchSubject
+      description: 搜索条目
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/SubjectSearchBody"
+      responses:
+        "200":
+          description: 返回搜索结果
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResult"
+        "401":
+          "$ref": "#/components/responses/401"
+        "404":
+          "$ref": "#/components/responses/404"
+        "500":
+          "$ref": "#/components/responses/500"
+      security:
+        - HTTPBearer: []
+  "/v0/essearch/celebrity":
+    post:
+      tags:
+        - 搜索
+      summary: Search celebrity
+      operationId: essearchCelebrity
+      description: 搜索人物
+      requestBody:
+        content:
+          "application/json":
+            schema:
+              $ref: "#/components/schemas/CelebritySearchBody"
+      responses:
+        "200":
+          description: 返回搜索结果
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResult"
+        "401":
+          "$ref": "#/components/responses/401"
+        "404":
+          "$ref": "#/components/responses/404"
+        "500":
+          "$ref": "#/components/responses/500"
+      security:
+        - HTTPBearer: []
+  "/v0/essearch/scroll":
+    post:
+      tags:
+        - 搜索
+      summary: Scroll search result
+      operationId: essearchScroll
+      description: 搜索结果翻页
+      parameters:
+        - $ref: "#/components/parameters/scroll_id"
+      responses:
+        "200":
+          description: 返回搜索结果
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResult"
+        "401":
+          "$ref": "#/components/responses/401"
+        "404":
+          "$ref": "#/components/responses/404"
+        "500":
+          "$ref": "#/components/responses/500"
+  "/v0/essearch/autocomplete":
+    get:
+      tags:
+        - 搜索
+      summary: Auto complete search query
+      operationId: essearchAutoComplete
+      description: 搜索关键词前缀补全
+      parameters:
+        - $ref: '#/components/parameters/autocomplete_keyword'
+        - $ref: '#/components/parameters/autocomplete_category'
+      responses:
+        "200":
+          description: 返回补全结果
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "401":
+          "$ref": "#/components/responses/401"
+        "404":
+          "$ref": "#/components/responses/404"
+        "500":
+          "$ref": "#/components/responses/500"
+      security:
+        - HTTPBearer: []
 components:
   parameters:
     path_subject_id:
@@ -1978,6 +2082,30 @@ components:
       description: "版本 ID"
       in: path
 
+    scroll_id:
+      required: true
+      schema:
+        type: string
+        title: ScrollId
+      name: scroll_id
+      in: query
+
+    autocomplete_keyword:
+      name: prefix
+      in: query
+      required: true
+      schema:
+        type: string
+        title: Prefix
+
+    autocomplete_category:
+      name: type
+      in: query
+      required: true
+      schema:
+        oneOf:
+          - $ref: '#/components/schemas/SubjectSearchType'
+          - $ref: '#/components/schemas/CelebritySearchType'
   schemas:
     SubjectID:
       title: Subject ID
@@ -1991,27 +2119,7 @@ components:
     UserGroup:
       $ref: "./components/user_group.yaml"
     BloodType:
-      title: BloodType
-      enum:
-        - 1
-        - 2
-        - 3
-        - 4
-      type: integer
-      description: Blood type of a person. A, B, AB, O
-      x-ms-enum:
-        name: BloodType
-        modelAsString: false
-        values:
-          - A
-          - B
-          - AB
-          - O
-      x-enum-varnames:
-        - A
-        - B
-        - AB
-        - O
+      $ref: "./components/blood_type.yaml"
     CharacterDetail:
       title: CharacterDetail
       required:
@@ -2121,27 +2229,7 @@ components:
           title: Staff
           type: string
     CharacterType:
-      title: CharacterType
-      enum:
-        - 1
-        - 2
-        - 3
-        - 4
-      type: integer
-      description: type of a character 角色，机体，舰船，组织...
-      x-ms-enum:
-        name: CharacterType
-        modelAsString: false
-        values:
-          - Character
-          - Mechanic
-          - Ship
-          - Organization
-      x-enum-varnames:
-        - Character
-        - Mechanic
-        - Ship
-        - Organization
+      $ref: "./components/character_type.yaml"
     SubjectCollectionType:
       $ref: "./components/subject_collection_type.yaml"
     EpisodeCollectionType:
@@ -2747,17 +2835,7 @@ components:
           title: Locked
           type: boolean
     PersonCareer:
-      title: PersonCareer
-      enum:
-        - producer
-        - mangaka
-        - artist
-        - seiyu
-        - writer
-        - illustrator
-        - actor
-      type: string
-      description: An enumeration.
+      $ref: "./components/person_career.yaml"
     PersonCharacter:
       title: PersonCharacter
       required:
@@ -2878,45 +2956,9 @@ components:
         stat:
           "$ref": "#/components/schemas/Stat"
     PersonImages:
-      title: PersonImages
-      required:
-        - large
-        - medium
-        - small
-        - grid
-      type: object
-      properties:
-        large:
-          title: Large
-          type: string
-        medium:
-          title: Medium
-          type: string
-        small:
-          title: Small
-          type: string
-        grid:
-          title: Grid
-          type: string
+      $ref: "./components/person_images.yaml"
     PersonType:
-      title: PersonType
-      enum:
-        - 1
-        - 2
-        - 3
-      type: integer
-      description: "`1`, `2`, `3` 表示 `个人`, `公司`, `组合`"
-      x-ms-enum:
-        name: PersonType
-        modelAsString: false
-        values:
-          - Individual
-          - Corporation
-          - Association
-      x-enum-varnames:
-        - Individual
-        - Corporation
-        - Association
+      $ref: "./components/person_type.yaml"
     RelatedCharacter:
       title: RelatedCharacter
       required:
@@ -3082,18 +3124,7 @@ components:
           type: string
           format: date-time
     Stat:
-      title: Stat
-      required:
-        - comments
-        - collects
-      type: object
-      properties:
-        comments:
-          title: Comments
-          type: integer
-        collects:
-          title: Collects
-          type: integer
+      $ref: "./components/stat.yaml"
     Subject:
       $ref: "./components/subject_v0.yaml"
     SlimSubject:
@@ -3176,6 +3207,84 @@ components:
         relation:
           title: Relation
           type: string
+    SubjectSearchBody:
+      title: SearchBody
+      required:
+        - query
+        - type
+      type: object
+      properties:
+        query:
+          title: Query
+          type: string
+        type:
+          title: Type
+          allOf:
+            - "$ref": "#/components/schemas/SubjectSearchType"
+        tags:
+          type: array
+          items:
+            type: string
+        dateRange:
+          type: object
+          properties:
+            gte:
+              title: GreaterThanOrEqual
+              type: string
+              format: date
+            lte:
+              title: LessThanOrEqual
+              type: string
+              format: date
+    SubjectSearchType:
+      enum:
+        - subject
+        - anime
+        - book
+        - music
+        - game
+        - real
+      type: string
+    CelebritySearchBody:
+      title: CelebritySearchBody
+      required:
+        - query
+        - type
+      type: object
+      properties:
+        query:
+          title: Query
+          type: string
+        type:
+          title: Type
+          allOf:
+            - "$ref": "#/components/schemas/CelebritySearchType"
+    CelebritySearchType:
+      enum:
+        - celebrity
+        - person
+        - character
+      type: string
+    SearchResult:
+      title: SearchResult
+      type: object
+      properties:
+        total:
+          description: 所有命中条目
+          type: integer
+        took:
+          description: 搜索耗费时长（毫秒）
+          type: integer
+        timedout:
+          description: 搜索是否超时
+          type: boolean
+        scrollid:
+          title: ScrollId
+          type: string
+        data:
+          oneOf:
+            - $ref: "./components/subject_v0.yaml"
+            - $ref: "./components/celebrity.yaml"
   securitySchemes:
     OptionalHTTPBearer:
       type: http

@@ -1,0 +1,21 @@
+title: CharacterType
+enum:
+  - 1
+  - 2
+  - 3
+  - 4
+type: integer
+description: type of a character 角色，机体，舰船，组织...
+x-ms-enum:
+  name: CharacterType
+  modelAsString: false
+  values:
+    - Character
+    - Mechanic
+    - Ship
+    - Organization
+x-enum-varnames:
+  - Character
+  - Mechanic
+  - Ship
+  - Organization

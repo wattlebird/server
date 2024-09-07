@@ -32,3 +32,6 @@ type TimeLineCat = uint16
 type PrivateMessageID = uint32
 type NotificationID = uint32
 type NotificationFieldID = uint32
+
+// Person = 0, Character = 1
+type CelebrityCat = uint8

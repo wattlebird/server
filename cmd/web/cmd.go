@@ -30,6 +30,7 @@ import (
 	"github.com/bangumi/server/internal/character"
 	"github.com/bangumi/server/internal/collections/infra"
 	"github.com/bangumi/server/internal/episode"
+	"github.com/bangumi/server/internal/essearch"
 	"github.com/bangumi/server/internal/index"
 	"github.com/bangumi/server/internal/notification"
 	"github.com/bangumi/server/internal/person"
@@ -66,6 +67,7 @@ func start() error {
 			config.AppConfigReader(config.AppTypeHTTP),
 			driver.NewRedisClientWithMetrics, // redis
 			driver.NewMysqlConnectionPool,    // mysql
+			driver.NewElasticSearch,          // elasticsearch
 			func() *resty.Client {
 				httpClient := resty.New().SetJSONEscapeHTML(false)
 				httpClient.JSONUnmarshal = json.Unmarshal
@@ -88,6 +90,7 @@ func start() error {
 			dam.New, subject.NewMysqlRepo, subject.NewCachedRepo, person.NewMysqlRepo,
 
 			auth.NewService, person.NewService, search.New,
+			essearch.NewElasticSearchRepo,
 		),
 
 		ctrl.Module,
